@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Memory Matching Madness</title>
+        <style>
+            body {
+                background-color: black;
+                color: white;
+                text-align: center;
+            }
+            .hidden {
+                display: none;
+            }
+            #tile_container {
+                width: 420px;
+                margin: auto;
+                display: flex;
+                flex-wrap: wrap;
+                /*border: 1px solid red;*/
+                justify-content: space-around;
+                perspective: 1000px;
+            }
+            /*#tile_container img {
+                width: 100px;
+            }*/
+
+            .tile{
+                width: 100px;
+                display: flex;
+                /*border: 1px solid yellow;*/
+                transform: scale(1);
+                transform-style: preserve-3d;
+                transition: transform .5s;
+                /*position: static;*/
+            }
+            .tile:active{
+                transform: scale(0.97);
+                transition: transform .2s;
+
+            }
+            .front-face{
+                width: 100px;
+                /*z-index: 10px;*/
+                position: absolute;
+                background-color: black;
+                backface-visibility: hidden;
+                /*transform: rotateY(180deg);*/
+            }
+            .back-face {
+                width: 100px;
+                backface-visibility: hidden;
+                transform: rotateY(180deg);
+              /*height: auto;*/
+              /*padding: 20px;*/
+              /*position: absolute;*/
+              /*border-radius: 5px;*/
+              /*background: #1C7CCC;*/
+            }
+            .flip{
+                transform: rotateY(180deg);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Memory Matching Madness</h1>
+
+        <div id="panel_gamestart">
+            <p>Let's play! click to begin! Select a difficulty: </p>
+            <form>
+                <select id="difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                </select>
+            </form>
+            <br><br><br>
+            <button id="button_playgame">Play Game</button>
+        </div>
+        <div id="panel_gameplaying" class="hidden">
+            <div id="timer_container">0 seconds elapsed</div>
+            <!-- <div id="timer_container"></div> -->
+            <div id="tile_container"></div>
+        </div>
+        <div id="panel_gameover" class="hidden">
+            <p>Game over!</p>
+            <p id="yourTime">Your time: 0 sec</p>
+            <p id="bestTime"></p>
+            <div id='leaderBoard'>
+                <!-- <p>LeaderBoard</p> -->
+            </div>
+            <button id="startAgainBtn">Start Again!</button>
+        </div>
+
+        <script>
+            // DOM queries
+            const panel_gamestart = document.querySelector('#panel_gamestart');
+            const button_playgame = document.querySelector('#button_playgame');
+            const panel_gameplaying = document.querySelector('#panel_gameplaying');
+            const timer_container = document.querySelector('#timer_container');
+            const tile_container = document.querySelector('#tile_container');
+            const panel_gameover = document.querySelector('#panel_gameover');
+            const yourTime_p = document.querySelector('#yourTime');
+            const bestTime_p = document.querySelector('#bestTime');
+            const startAgainBtn = document.querySelector('#startAgainBtn');
+
+            const difficulty = document.querySelector('#difficulty');
+
+            // global variables to keep track of our picked tiles
+            let tile1 = false;
+            let tile2 = false;
+
+            let twoClicked = false;
+            // let num = 0;
+            let yourTime = 0;
+            let bestTime = 100000;
+
+            let start = new Date().getTime();
+            let diff = 0;
+            let diff2 = 0;
+
+            let cardsNum = 12;
+            let pairsNum = cardsNum / 2;
+
+            let difficultyV;
+
+            let bestE,bestM,bestH
+
+            let audioYes = new Audio('assignment06_images/correct.wav')
+            let audioNo = new Audio('assignment06_images/wrong.wav')
+
+            if(localStorage.getItem("difficulty")!=null){
+                    difficultyV = localStorage.getItem("difficulty")
+                    difficulty.value = difficultyV
+            }
+            // else{
+            //         let difficultyV = difficulty.value
+            // }
+            // console.log(difficulty.value);
+            function initGame(difficultyV){
+                if(difficultyV == "easy"){
+                    cardsNum = 12;
+                    pairsNum = cardsNum / 2;
+                    tile_container.style.width = "420px";
+                }else if(difficultyV == "medium"){
+                    cardsNum = 20;
+                    pairsNum = cardsNum / 2;
+                    tile_container.style.width = "520px";
+                }else{
+                    cardsNum = 30;
+                    pairsNum = cardsNum / 2;
+                    tile_container.style.width = "620px";
+                }
+                
+            }
+
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            function timer(){
+                diff = new Date().getTime() - start;
+                // console.log(start, diff)
+                diff2 = parseInt(diff/1000-1)
+                timer_container.innerText = `${diff2} seconds elapsed`
+            }
+
+            startAgainBtn.onclick = function(){
+                            initGame(difficultyV);
+                            console.log(difficulty.value);
+                            console.log(difficultyV);
+                            start = new Date().getTime();
+                            diff = 0;
+                            diff2 = 0;
+                            yourTime = 0;
+                            selectedTiles = [];
+                            tile1 = false;
+                            tile2 = false;
+                            twoClicked = false;
+                            panel_gameover.classList.add("hidden");
+                            // panel_gameplaying.innerHTML = '<div id="timer_container">0 seconds elapsed</div> <div id="tile_container"></div>'
+                            timer_container.innerText = '0 seconds elapsed';
+                            tile_container.innerHTML = ''
+                            panel_gamestart.classList.remove('hidden');
+                            leaderBoard.innerHTML = ''
+                        }
+
+
+            button_playgame.onclick = function(e) {
+
+                difficultyV = difficulty.value;
+                localStorage.setItem("difficulty",`${difficulty.value}`)
+                initGame(difficultyV);
+                var interval = setInterval(timer,1000)
+                panel_gamestart.classList.add('hidden');
+                panel_gameplaying.classList.remove('hidden');
+
+                let assets = ['snorlax.png', 'electrabuzz.png', 'chansey.png', 'oddish.png',
+                            'pikachu.png', 'paras.png', 'arcanine.png', 'ponita.png',
+                            'venonat.png', 'eggsecute.png', 'machop.png', 'pidgey.png',
+                            'psyduck.png', 'tauros.png', 'vulpix.png', 'gloom.png',
+                            'krabby.png', 'butterfree.png', 'bulbasaur.png', 'clefairy.png',
+                            'koffing.png', 'goldeen.png', 'magikarp.png', 'beedrill.png',
+                            'lapras.png', 'meowth.png', 'ekans.png', 'jigglypuff.png',
+                            'horsea.png', 'polywog.png', 'sandshrew.png', 'rattata.png',
+                            'gengar.png', 'eevee.png', 'bellsprout.png', 'squirtle.png',
+                            'seel.png', 'caterpie.png'];
+
+                // pick 6 graphics at random
+                let selectedTiles = [];
+
+                while (selectedTiles.length < cardsNum) {
+                    // pick a random one from the assets array
+                    let i = parseInt( Math.random() * assets.length );
+                    selectedTiles.push( assets[i] );
+                    selectedTiles.push( assets[i] );
+                    assets.splice(i, 1);
+                }
+
+                shuffle(selectedTiles);
+
+                console.log(pairsNum);
+
+                // you need to randomize these tiles so they are all messed up
+
+                // create tiles for these graphics
+                for (let i = 0; i < selectedTiles.length; i++) {
+                    // create a tile
+                    let tile = document.createElement('div');
+                    tile.classList.add('tile');
+                    let tileFront = document.createElement('img');
+                    let tileBack = document.createElement('img');
+                    tileFront.src = 'assignment06_images/pokeball.png';
+                    tileFront.classList.add('front-face');
+                    tileBack.src = 'assignment06_images/' + selectedTiles[i];
+                    tileBack.classList.add('back-face');
+                    tile.dataset.secret = 'assignment06_images/' + selectedTiles[i];
+                    tile_container.appendChild(tile);
+                    tile.appendChild(tileFront);
+                    tile.appendChild(tileBack);
+
+                    // set up event listeners on each tile
+                    tile.onclick = function(event) {
+                    // tile.classList.add('flip');
+                    //     console.log(event.currentTarget,tile1);
+
+
+                        // have no tiles been clicked?
+                        if ( tile1 == false && tile2 == false && event.currentTarget.dataset.isFaceUp != 'true') {
+                            // num=1;
+
+                            // reveal tile 1
+                            event.currentTarget.dataset.isFaceUp = 'true';
+
+                            // switch graphics
+                            tile.classList.add('flip');
+                            // event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile1 = event.currentTarget;
+                            // tile1.dataset.matched = "true";
+                            // console.log("case1: "+`${event.currentTarget.src}`);
+                        }
+                        else if ( tile2 == false && event.currentTarget.dataset.isFaceUp != 'true'){
+                            // num=2;
+                            // reveal this tile
+                            // switch graphics
+                            event.currentTarget.dataset.isFaceUp = "true";
+                            tile.classList.add('flip');
+
+                            // mark this as tile1
+                            tile2 = event.currentTarget;
+                            // tile2.dataset.isFaceUp = "true";
+
+                            // did they get it right?
+                            if (tile1.dataset.secret == tile2.dataset.secret) {
+                                setTimeout(function(){
+                                    audioYes.play();
+                                },500)
+                                // num = 21
+                                // reset the game back to the original state and allow more clicks
+                                tile1 = false;
+                                tile2 = false;
+                                console.log("MATCH");
+                                pairsNum--;
+                            }
+                            else {
+                                // num=22
+                                console.log(tile1, tile2);
+                                setTimeout(function(){
+                                    audioNo.play();
+                                },500)
+                                // they got it wrong
+                                setTimeout( function() {
+                                    tile1.dataset.isFaceUp="false";
+                                    tile2.dataset.isFaceUp="false";
+                                    // tile1.src = 'assignment06_images/pokeball.png';
+                                    // tile2.src = 'assignment06_images/pokeball.png';
+                                    // tile1.dataset.matched="false";
+                                    tile1.classList.remove('flip');
+                                    tile2.classList.remove('flip');
+                                    tile1 = false;
+                                    tile2 = false;
+                                }, 1000);
+                            }
+                        }
+
+                        if(pairsNum <= 0){
+            
+
+                            setTimeout(function(){
+                                if(difficultyV == "easy" && localStorage.getItem("bestE")!=null){
+                                   bestE = parseInt(localStorage.getItem("bestE")); 
+                                }else{
+                                    bestE = 10000;
+                                }
+                                if(difficultyV == "medium" && localStorage.getItem("bestM")!=null){
+                                   bestM = parseInt(localStorage.getItem("bestM")); 
+                                }else {
+                                    bestM = 10000;
+                                }
+                                if(difficultyV == "hard" && localStorage.getItem("bestH")!=null){
+                                   bestH = parseInt(localStorage.getItem("bestH")); 
+                                }else{
+                                    bestH = 10000;
+                                }
+                                // if(localStorage.getItem("bestTime")!=null){
+                                //     bestTime = parseInt(localStorage.getItem("bestTime"));
+                                // }
+                                clearInterval(interval);
+                                yourTime = diff2;
+                                if(difficultyV == "easy"){
+                                    if(yourTime<bestE){
+                                        bestE = yourTime;
+                                        var player = prompt("Congrats! You've achived the best score. Please type in your name: ");
+                                        localStorage.setItem("bestE",`${bestE}`);
+                                    }
+                                }else if(difficultyV == "medium"){
+                                    if(yourTime<bestM){
+                                        bestM = yourTime;
+                                        var player = prompt("Congrats! You've achived the best score. Please type in your name: ");
+                                        localStorage.setItem("bestM",`${bestM}`);
+                                    }
+                                }else{
+                                    if(yourTime<bestH){
+                                        bestH = yourTime;
+                                        var player = prompt("Congrats! You've achived the best score. Please type in your name: ");
+                                        localStorage.setItem("bestH",`${bestH}`);
+                                    }
+                                }
+                                // if(yourTime<bestTime){
+                                //     bestTime = yourTime;
+                                //     var player = prompt("Congrats! You've achived the best score. Please type in your name: ")
+                                //     // localStorage.setItem(`${player}`,`${bestTime}`);
+                                // }
+                                // localStorage.setItem("bestTime",`${bestTime}`);
+                                yourTime_p.innerText = `Your time: ${yourTime} sec`
+                                // bestTime_p.innerText = `Best time: ${bestTime} sec`
+
+                                // for (var i = 1; i < localStorage.length; i++){
+                                //     leaderBoard.innerHTML+=`<p>${localStorage.key(i)}: ${localStorage.getItem(localStorage.key(i))}</p>`;
+                                // }
+                                leaderBoard.innerHTML+=`<p>${player}'s Best Time - Easy: ${localStorage.getItem("bestE")}</p><p>${player}'s Best Time - Medium: ${localStorage.getItem("bestM")}</p><p>${player}'s Best Time - Hard: ${localStorage.getItem("bestH")}</p>`;
+                                panel_gameplaying.classList.add('hidden');
+                                panel_gameover.classList.remove("hidden");
+                            }, 600);
+                        }
+                    }
+                }
+
+            }
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Assignment 02</title>
+	<style type="text/css">
+		
+		#container {
+			width: 800pt;
+			height: 600pt;
+			margin: auto;
+			border: 5px solid black;
+			position: relative;
+		}
+		#background{
+			width: 100%;
+			height: 600pt;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			z-index: 0;
+		}
+		#title{
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			z-index: 1;
+		}
+		#infopanel{
+			position: absolute;
+			top: 95px;
+			left: 20px;
+			z-index: 1;
+			font-size: 16pt;
+			height: 24pt;
+			width: 340pt;
+			text-align: center;
+			background-color: rgba(255,255,255,0.5);
+		}
+		#infopanel p{
+			margin: auto;
+		}
+		#timepanel{
+			position: absolute;
+			top: 140px;
+			left: 20px;
+			z-index: 1;
+			font-size: 15pt;
+			height: 22pt;
+			width: 340pt;
+			text-align: center;
+			background-color: rgba(255,255,255,0.5);
+		}
+		#timepanel p{
+			margin: auto;
+		}
+		#body{
+			position: absolute;
+			bottom: 0px;
+			right: 200px;
+			z-index: 1;
+		}
+		#head{
+			position: absolute;
+			bottom: 280px;
+			right: 275px;
+			z-index: 1;
+		}
+
+		#caps{
+			z-index: 2;
+			position: absolute;
+			right: 280px;
+			bottom: 340px;
+			width: 100px;
+			height: auto;
+
+		}
+		#glasses{
+			z-index: 2;
+			position: absolute;
+			right: 285px;
+			bottom: 292px;
+			width: 80px;
+			height: auto;
+		}
+		#handDecals{
+			z-index: 2;
+			position: absolute;
+			right: 170px;
+			bottom: 50px;
+			width: 100px;
+			height: auto;
+		}
+		#numbers{
+			padding-top: 10pt;
+			position: absolute;
+			top: 180px;
+			left: 160px;
+			z-index: 1;
+			height: 55pt;
+			width: 70pt;
+			text-align: center;
+			background-color: rgba(255,255,255,0.5);
+
+		}
+		i{
+			margin-top: 10px;
+		}
+
+
+	</style>
+</head>
+<body>
+	<!-- body & random title -->
+	<div id="container">
+		<div id="numbers"></div>
+		<script type="text/javascript">
+		const words = ['Awesome', 'Fantastic', 'Fabulous', 'Superb', 'Perfect', 'Brilliant', 'Coming up Roses'];
+
+		//pick a word at random
+		let i = parseInt(Math.random()*words.length);
+		let word = words[i];
+
+		//write out the H1 tag to use that word
+		document.write(`<h1 id="title">Everything is ${word}!</h1>`);
+		//refresh?
+	</script>
+
+	<!-- random greetings & lucky numbers -->
+	<script type="text/javascript">
+		//random greetings
+		var greeting;
+		let rightNow = new Date();
+		var hour = rightNow.getHours();
+		var to12 = hour >= 12 ? 'pm':'am';
+		hour = (hour%12) || 12
+
+		let minute = rightNow.getMinutes();
+
+
+		if(minute<10){
+			var minuteStr = `0${minute}`
+		}else{
+			minuteStr = `${minute}`
+		}
+
+		if (to12 == "am"){
+			if (hour<6 || hour == 12){
+				greeting = "Good Night!"
+				document.write(`<img src="assignment02_images/backgrounds/night.png" id="background">`)
+				let title = document.querySelector("#title");
+				title.style.color = "white";
+			}
+			else {
+				greeting = "Good Morning!"
+				document.write(`<img src="assignment02_images/backgrounds/morning.png" id="background">`)
+			}
+		}else{
+			if(hour<6 || hour==12){
+				greeting = "Good Afternoon!"
+				document.write(`<img src="assignment02_images/backgrounds/afternoon.png" id="background">`)
+			}
+			else{
+				greeting = "Good Evening!"
+				document.write(`<img src="assignment02_images/backgrounds/evening.png" id="background">`)
+			}
+		}
+
+		document.write(`<div id="infopanel"><p>The current time is ${hour}:${minuteStr}${to12} - ${greeting}</p></div>`);
+	
+		//lucky numbers & different display
+		var hasNum = false;
+		var numSet = [];
+		while(!hasNum){
+			var userNum = prompt("please enter a number greater or equal to 3");
+			if (!isNaN("apple")){
+				hasNum = true;
+			}
+			else if(userNum>=3){
+				hasNum = true
+			}
+			else{
+				alert("please enter a POSITIVE NUMBER greater or equal to 3")
+			}
+		}
+		while(numSet.length<3){
+			var randomNum = parseInt(Math.random()*userNum)+1;
+			if(numSet.indexOf(randomNum)===-1){
+				numSet.push(randomNum)
+			}
+		}
+		let numDiv = document.querySelector(`#numbers`);
+		for(num in numSet){
+			if(numSet[num]<10){
+				numDiv.innerHTML += `<i class="bi bi-${numSet[num]}-circle-fill"></i>`;
+				numDiv.innerHTML += `<br>`;
+			}else{
+				theStr = numSet[num].toString();
+				console.log(theStr);
+				for(m in theStr){
+					console.log(theStr[m]);
+					numDiv.innerHTML += `<i class="bi bi-${theStr[m]}-circle-fill"></i>`;
+				}
+				numDiv.innerHTML += `<br>`;
+			}
+		}
+		document.write(`<div id="timepanel"><p>Your three lucky numbers today are</p></div>`);
+	</script>
+
+	<!-- random body & head -->
+	<script type="text/javascript">
+		var ranHead = parseInt(Math.random()*6)+1;
+		var ranBody = parseInt(Math.random()*6)+1;
+		document.write(`<img src="assignment02_images/heads/head${ranHead}.png" id="head">`)
+		document.write(`<img src="assignment02_images/bodies/body${ranBody}.png" id="body">`)
+	</script>
+
+	<!-- random decals -->
+	<script type="text/javascript">
+		const decalsL = ["cap","cap2","sunglasses","sunglasses2","bag","suitcase",];
+		let n= parseInt(Math.random()*decalsL.length);
+		let decal = decalsL[n];
+		if(n<2){
+			document.write(`<img src="images/${decal}.png" id="caps">`);
+		}else if(n<4){
+			document.write(`<img src="images/${decal}.png" id="glasses">`);
+		}else{
+			document.write(`<img src="images/${decal}.png" id="handDecals">`);
+		}
+
+	</script>
+	</div>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+</body>
+</html>

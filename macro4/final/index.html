@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Design Your own Hogwarts!</title>
+    <style type="text/css">
+      body{
+        background-color: rgba(100,100,100,0.8);
+      }
+      #wrap{
+        display: flex;
+      }
+      #left_block{
+        /*float: left;*/
+        background-color: rgba(255,255,255,0.8);
+        width: 320px;
+        height: 320px;
+        border: 1px solid black;
+        margin: 100px;
+        margin-top: 50px;
+        margin-right: 80px;
+        font-size: 0px;
+      }
+      #right_container{
+        /*min-width: 500px;*/
+        background-color: rgba(255,255,255,0.6);
+        padding: 10px;
+        border: 1px solid black;
+      }
+      #instruction{
+        width: 400px;
+        margin-left: 80px;
+      }
+      .img{
+        padding: 0.5px;
+      }
+      .imgClicked{
+        width: 25px;
+        height: 25px;
+        border: 4px solid yellow;
+      }
+      .leftDiv{
+        padding: 0px;
+        margin: 0px;
+        width: 32px;
+        height: 32px;
+        /*background-color: yellow;*/
+        /*border: solid 1px black;*/
+
+      }
+      .leftDiv:hover{
+        background-color: yellow;
+      }
+      h1{
+        padding: 10px;
+        padding-bottom: 0px; 
+        margin-left: 30px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Design Your Own Hogwarts!</h1>
+    <div id="wrap">
+      <div id="left_container">
+        <div id="instruction"><h3>Choose a tile from the right side and put it here!</h3></div>
+        <div id="left_block"></div>
+      </div>
+      <div id="right_container"></div>
+    </div>
+
+
+    <!-- load in the image array file - this makes available a new array of all image filenames that you can use for this project -->
+    <!-- Assets courtesy of Crawl Stone Soup: https://github.com/crawl/tiles -->
+    <script src="image_array.js"></script>
+    <script>
+      let lastClkImg;
+      let currentSrc = "";
+      let right_container = document.querySelector(`#right_container`);
+      let left_block = document.querySelector(`#left_block`);
+      for(let i=0;i<array_library.length;i++){
+          let tempImg = document.createElement('img');
+          tempImg.src = array_library[i];
+          tempImg.classList.add('img');
+          right_container.appendChild(tempImg);
+          tempImg.addEventListener('click',function(event){
+            if(typeof lastClkImg == 'undefined'){
+              event.target.classList.add('imgClicked');
+              lastClkImg = event.target;
+            }else{
+              lastClkImg.classList.remove('imgClicked');
+              event.target.classList.add('imgClicked');
+              lastClkImg = event.target;
+            }
+            
+          })
+        }
+        for(let i=0;i<100;i++){
+          let div = document.createElement('img');
+          div.classList.add('leftDiv');
+          left_block.appendChild(div);
+          div.addEventListener('click',function(event){
+            event.target.style.backgroundImage = `url(${lastClkImg.src})`
+          })
+        }
+    </script>
+
+
+  </body>
+</html>

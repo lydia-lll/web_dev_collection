@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Macro 3</title>
+	<style type="text/css">
+		#left{
+			float: left;
+			width: 800px;
+			height: 600px;
+			position: relative;
+			margin-right: 20px;
+		}
+		#background{
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+		}
+		#grass1 {
+			position: absolute;
+			left: 0px;
+			bottom: 0px;
+		}
+		#grass2 {
+			position: absolute;
+			left: 275px;
+			bottom: 0px;
+		}
+		#grass3 {
+			position: absolute;
+			right: 0px;
+			bottom: 0px;
+		}
+		.grass:hover{
+			background: rgba(255,255,0,0.5);
+		}
+	</style>
+</head>
+<body>
+	<div id = "left">
+		<img id = "background" src="images/environment_forestbackground.png">
+		<img class = "grass" id = "grass1" src="images/grass.png">
+		<img class = "grass" id = "grass2" src="images/grass.png">
+		<img class = "grass" id = "grass3" src="images/grass.png">
+	</div>
+	<div id="right">
+		<h1>Gotta Catch 'em All!</h1>
+		<h4 id="instructions">Instructions</h4>
+		<h2 id="status">Click a grass</h2>
+		<div id="pokemon_caught_div"> </div>
+		<div id="pokeballs_left_div"> </div>
+		<button id="play_again_button" style="display: none; padding: 3px; margin: 10px">Play Again!</button>
+		<button id="reset_button" style="display: none; padding: 3px; margin-top: 18px">Reset</button>
+		<!-- <h4 id="history_title">Game History &nbsp &nbsp &nbsp</h4> -->
+		<div id="history">
+			<h4 id="history_title">Game History &nbsp &nbsp &nbsp</h4>
+			<div id="history_text"></div>
+			<button id="clean_button">Clean History</button>
+		</div>
+		
+	</div>
+
+	<script type="text/javascript">
+		// set up dom queries for all the things we plan on using
+		const pokemon = [
+		    {name:'Pikachu', image:'images/pikachu.png'}, 
+		    {name:'Bulbasaur', image:'images/bulbasaur.png'},
+		    {name:'Charmander', image:'images/charmander.png'},
+		    {name:'Eevee', image:'images/eevee.png'},
+		    {name:'Squirtle', image:'images/squirtle.png'}
+		]
+		const clean_button = document.getElementById(`clean_button`);
+		const reset_button = document.getElementById(`reset_button`);
+		const grass1 = document.getElementById(`grass1`);
+		const grass2 = document.getElementById(`grass2`);
+		const grass3 = document.getElementById(`grass3`);
+		const pokemon_caught_div = document.getElementById(`pokemon_caught_div`);
+		const pokeballs_left_div = document.getElementById(`pokeballs_left_div`);
+		const play_again_button = document.getElementById(`play_again_button`);
+		const status = document.getElementById(`status`);
+		const history = document.getElementById(`history`);
+		const history_text = document.getElementById(`history_text`);
+		const allGrass = document.querySelectorAll(`.grass`);
+
+		let otherTwo = [];
+
+
+		//create variables to keep track on game logic
+		let pokeballsRemaining = 5;
+		let pokemonCaught = 0;
+		// let clicked = false;
+		function init(pokemonCaught,pokeballsRemaining){
+			pokemon_caught_div.innerHTML = "Caught: &nbsp" + String(pokemonCaught);
+			pokeballs_left_div.innerHTML = "Pokeballs: &nbsp" + String(pokeballsRemaining);
+		}
+
+		function checkRemain(){
+			if( pokeballsRemaining<1){
+			status.innerHTML = "Game Over";
+			play_again_button.style.display = "none";
+			reset_button.style.display = "block";
+			}
+		}
+
+		function addHistory(action){
+			history_text.innerHTML = `[${action}]` + "&nbsp" + history_text.innerHTML
+		}
+
+		function pokeballFound(grass){
+			grass.src = 'images/pokeballs.png';
+			pokeballsRemaining += 2;
+			addHistory("Pokeballs found");
+		}
+		function pokemonFound(grass){
+			grass.src = '';
+			addHistory("Nothing found");
+		}
+		function nothingFound(grass){
+			let chance2 = parseInt(Math.random()*5);
+			grass.src = pokemon[chance2]["image"];
+			pokemonCaught += 1;
+			addHistory(pokemon[chance2]["name"]+"&nbsp found");
+		}
+
+		function pokeballShow(grass){
+			grass.src = 'images/pokeballs.png';
+			grass.style.opacity = `0.6`;
+		}
+		function pokemonShow(grass){
+			grass.src = '';
+			grass.style.opacity = `0.6`;
+		}
+		function nothingShow(grass){
+			let chance2 = parseInt(Math.random()*5);
+			grass.src = pokemon[chance2]["image"];
+			grass.style.opacity = `0.6`;
+		}
+
+		function setOtherTwo(otherList,fun1,fun2){
+			switch(parseInt(Math.random()*2)){
+				case 0:
+					fun1(otherList[0]);
+					fun2(otherList[1]);
+					break;
+				case 1:
+					fun2(otherList[0]);
+					fun1(otherList[1]);
+			}
+		}
+
+		console.log(allGrass);
+
+		//game starts
+		init(pokemonCaught,pokeballsRemaining);
+
+		grass1.onclick = function(){
+
+			//check if the play again button is visible
+			if(play_again_button.style.display == "none" && pokeballsRemaining>0){
+
+				otherTwo = [grass2,grass3];
+				//reduce pokeballs
+				pokeballsRemaining -= 1;
+				//generate a chance variable
+				let chance = parseInt(Math.random()*3);
+				//more pokeballs
+				if (chance ==0){
+					pokeballFound(grass1);
+					setOtherTwo(otherTwo,nothingShow,pokemonShow);
+				}
+				//nothing happens
+				else if(chance == 1){
+					nothingFound(grass1);
+					setOtherTwo(otherTwo,pokeballShow,pokemonShow);
+				}
+				//it's a pokemon
+				else{
+					pokemonFound(grass1);
+					setOtherTwo(otherTwo,nothingShow,pokeballShow);
+				}
+				//update
+				init(pokemonCaught,pokeballsRemaining);
+				//button
+				play_again_button.style.display = `block`;
+				checkRemain();
+			}	
+		}
+		grass2.onclick = function(){
+
+			//check if the play again button is visible
+			if(play_again_button.style.display == "none" && pokeballsRemaining>0){
+
+				otherTwo = [grass1,grass3];
+				//reduce pokeballs
+				pokeballsRemaining -= 1;
+				//generate a chance variable
+				let chance = parseInt(Math.random()*3);
+				//more pokeballs
+				if (chance ==0){
+					pokeballFound(grass2);
+					setOtherTwo(otherTwo,nothingShow,pokemonShow);
+				}
+				//nothing happens
+				else if(chance == 1){
+					nothingFound(grass2);
+					setOtherTwo(otherTwo,pokeballShow,pokemonShow);
+				}
+				//it's a pokemon
+				else{
+					pokemonFound(grass2);
+					setOtherTwo(otherTwo,nothingShow,pokeballShow);
+				}
+				//update
+				init(pokemonCaught,pokeballsRemaining);
+				//button
+				play_again_button.style.display = `block`;
+				checkRemain();
+			}
+
+
+			
+		}
+		grass3.onclick = function(){
+
+			clicked = true;
+
+			//check if the play again button is visible
+			if(play_again_button.style.display == "none" && pokeballsRemaining>0){
+
+				otherTwo = [grass2,grass1];
+				//reduce pokeballs
+				pokeballsRemaining -= 1;
+				//generate a chance variable
+				let chance = parseInt(Math.random()*3);
+				//more pokeballs
+				if (chance ==0){
+					pokeballFound(grass3);
+					setOtherTwo(otherTwo,nothingShow,pokemonShow);
+				}
+				//nothing happens
+				else if(chance == 1){
+					nothingFound(grass3);
+					setOtherTwo(otherTwo,pokeballShow,pokemonShow);
+				}
+				//it's a pokemon
+				else{
+					pokemonFound(grass3);
+					setOtherTwo(otherTwo,nothingShow,pokeballShow);
+				}
+				//update
+				init(pokemonCaught,pokeballsRemaining);
+				//button
+				play_again_button.style.display = `block`;
+				checkRemain();
+			}
+		}
+
+		//when the user clicks on the play again button
+		play_again_button.onclick = function(){
+			grass1.src = `images/grass.png`;
+			grass2.src = `images/grass.png`;
+			grass3.src = `images/grass.png`;
+
+			grass1.style.opacity = `1`;
+			grass2.style.opacity = `1`;
+			grass3.style.opacity = `1`;
+
+			play_again_button.style.display = "none";
+		}
+
+		//clear history
+		clean_button.onclick = function(){
+			history_text.innerHTML = '';
+		}
+
+		//reset game
+		reset_button.onclick = function(){
+			grass1.src = `images/grass.png`;
+			grass2.src = `images/grass.png`;
+			grass3.src = `images/grass.png`;
+			pokeballsRemaining = 5;
+			pokemonCaught = 0;
+			init(pokemonCaught,pokeballsRemaining);
+			history_text.innerHTML = '';
+			reset_button.style.display = "none";
+		}
+
+	</script>
+</body>
+</html>

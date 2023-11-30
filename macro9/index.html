@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Let's Chat!</title>
+        <style>
+            h1{
+                padding: 10px;
+            }
+            a{
+                text-decoration: none;
+            }
+            #previous_messages {
+                width: 100%;
+                height: 300px;
+                resize: none;
+            }
+            .hidden {
+                display: none;
+            }
+            .error{
+                background-color: red;
+            }
+            #button_signup{
+                margin: 5px;
+            }
+            #button_login{
+                margin: 5px;
+            }
+            #username{
+                margin: 8px;
+            }
+            #passname{
+                margin: 8px;
+            }
+            #panel_login{
+                margin-left: 30px;
+            }
+        </style>
+        <script src="helpers.js"></script>
+    </head>
+    <body>
+        <h1>Let's Chat!</h1>
+
+        <div id="error_login" class="hidden error">
+            <h5>Please Fill Out All The Forms!</h5>
+        </div>
+
+        <div id="error_login_config" class="hidden error">
+            <h5>Username or Password is invalid!</h5>
+        </div>
+
+        <div id="panel_login">
+            Username: <input type="text" id="username"><br>
+            Password: <input type="password" id="password"><br>
+            <button id="button_signup"><a href="signup.html">Sign Up</a></button>
+            <button id="button_login">Login</button>
+        </div>
+
+        <!-- <div id="panel_nickname">
+            <input type="text" id="nickname">
+            <button id="button_savenickname">Save Nickname & Chat</button>
+        </div> -->
+
+        <div id="panel_chat" class="hidden">
+            <textarea id="previous_messages" readonly></textarea>
+            <input type="text" id="message">
+            <button id="button_sendmessage">Send Message</button>
+        </div>
+        
+        <div id="error_msg" class="hidden error">
+            <h5>Message Too Short!</h5>
+        </div>
+
+        <script>
+            // global variables
+            let username;
+            let password;
+            let reading = false;
+            let loggedin = false;
+
+            // figure out when the user saves their nickname
+            document.querySelector('#button_login').onclick = function(e) {
+
+                // store the nickname for future use
+                username = document.querySelector('#username').value;
+                password = document.querySelector('#password').value;
+
+                // // hide the nickname panel
+                // document.querySelector('#panel_nickname').classList.add('hidden');
+
+                // // show the chat panel
+                // document.querySelector('#panel_chat').classList.remove('hidden');
+                if(!username || !password){
+                    document.querySelector('#error_login').classList.remove('hidden');
+                    console.log('invalid input');
+                }else{
+                    document.querySelector('#error_login').classList.add('hidden');
+                    performFetch({
+                        url: 'user_manage.php?action=login',
+                        method: 'post',
+                        data:{
+                            username: username,
+                            password: password
+                        },
+                        success: function(data){
+                            console.log("data from server:", data);
+                            if(data == "not found"){
+                                console.log("Username or Password is invalid")
+                                document.querySelector('#error_login_config').classList.remove('hidden');
+                            }else{
+                                document.querySelector('#error_login_config').classList.add('hidden');
+                                console.log("Login successfully");
+                                console.log("return data: "+data);
+                                // hide the nickname panel
+                                document.querySelector('#panel_login').classList.add('hidden');
+
+                                // show the chat panel
+                                document.querySelector('#panel_chat').classList.remove('hidden');
+                                loggedin = true;
+                            }
+                            
+                        },
+                        error: function(error) {
+                            console.log("ERROR");
+                            // document.querySelector('#error_msg').classList.remove('hidden');
+                        }
+                    })
+                }
+            }
+
+            // when the user types in a new chat message
+            document.querySelector('#button_sendmessage').onclick = function(e) {
+
+                if(document.querySelector('#message').value.length<1){
+                    document.querySelector('#error_msg').classList.remove('hidden');
+                }else{
+                    document.querySelector('#error_msg').classList.add('hidden');
+                    // contact the server with our message AND our nickname
+                    performFetch({
+                        url: 'api.php?command=save',
+                        method: 'post',
+                        data: {
+                            nickname: username,
+                            message: document.querySelector('#message').value
+                        },
+                        success: function(data) {
+                            console.log("SUCCESS");
+                            console.log(data);
+                            if (data != "MISSINGDATA") {
+                                document.querySelector('#previous_messages').value += data + "\n";
+                                document.querySelector('#message').value='';
+                            }
+                        },
+                        error: function(error) {
+                            console.log("ERROR");
+                            // document.querySelector('#error_msg').classList.remove('hidden');
+                        }
+                    })
+                }
+
+            }
+
+            document.querySelector('#previous_messages').addEventListener("mouseover", function(){
+                console.log("mouse over");
+                reading = true;
+            })
+            document.querySelector('#previous_messages').addEventListener("mouseleave", function(){
+                console.log("mouse over");
+                reading = false;
+            })
+
+            function getAllMessages() {
+
+                performFetch({
+                    url: 'api.php',
+                    method: 'get',
+                    data: {
+                        command: 'get_all_messages'
+                    },
+                    success: function(data) {
+                        console.log(data);
+
+
+
+                        // take what the server gave us and turn it into a JS object
+                        data = JSON.parse( data );
+
+                        console.log(data);
+
+                        document.querySelector('#previous_messages').value = '';
+
+                        for (let i = 0; i < data.length; i++) {
+                            document.querySelector('#previous_messages').value += data[i] + "\n";
+                        }
+
+                        if(!reading){
+                            scrollToBottom(document.querySelector('#previous_messages'));
+                        }
+                        // scrollToBottom(document.querySelector('#previous_messages'));
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            function scrollToBottom(textArea) {
+                textArea.scrollTop = textArea.scrollHeight;
+            }
+
+            // if(loggedin){
+                setInterval(
+                    function(){
+                        if(loggedin){
+                            getAllMessages()
+                        }
+                    },
+                    3000
+                );
+            // }
+
+
+        </script>
+
+    </body>
+
+</html>

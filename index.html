@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="utf-8">
+	<title>Web Development Portfolio</title>
+	<style type="text/css">
+		@media only screen and (max-width: 480px){
+			.homeworks{
+				/*border: solid 1px blue;*/
+				min-width: 70vw;
+				max-width: 70vw;
+				height: 76vw;
+				text-align: center;
+				margin: auto;
+			}	
+			.icons1{
+				width: 64vw;
+				height: 64vw;
+				padding-top: 2vw; 
+				margin-bottom: 2px;
+			}
+			.icons2{
+				width: 66vw;
+				height: 66vw;
+				padding-top: 5px;
+			}
+			.title{
+				font-size: 20pt;
+			}
+			.name{
+				display: none;
+				/*left: 0px;
+				top: 0px;
+				font-size: 8pt;*/
+			}
+		}
+		@media only screen and (min-width: 481px) and (max-width: 960px){
+			.homeworks{
+				/*border: solid 1px red;*/
+				min-width: 28vw;
+				max-width: 28vw;
+				height: 27vw;
+				text-align: center;
+				margin: auto;
+			}	
+			.icons1{
+				width: 18vw;
+				height: 18vw;
+				padding-top: 2vw; 
+				margin-bottom: 2px;
+			}
+			.icons2{
+				width: 20vw;
+				height: 20vw;
+				padding-top: 5px;
+			}
+			.text{
+				margin-top: 2px;
+			}
+			.title{
+				font-size: 22pt;
+			}
+			.name{
+				font-size: 10pt;
+			}
+		}
+		@media only screen and (min-width: 961px){
+			.homeworks{
+				/*border: solid 1px black;*/
+				max-width: 13vw;
+				min-width: 13vw;
+				height: 13vw;
+				text-align: center;
+				margin: auto;
+			}	
+			.icons1{
+				width: 6vw;
+				height: 6vw;
+				padding-top: 2vw; 
+				margin-bottom: 4px;
+			}
+			.icons2{
+				width: 8vw;
+				height: 8vw;
+				padding-top: 5px;
+			}
+		}
+
+		@font-face {
+		  font-family: Playfair;
+		  src: url("fonts/Playfair.ttf");
+		}
+
+		@font-face {
+		  font-family: PlayfairI;
+		  src: url("fonts/PlayfairI.ttf");
+		}
+
+		@font-face {
+		  font-family: Lora;
+		  src: url("fonts/Lora.ttf");
+		}
+
+		body{
+			padding: 0px;
+			margin: 0px;
+		}
+
+		header{
+			margin: 0px;
+			border-left: dashed 5px black; 
+			border-bottom: dashed 5px black;
+			padding: 8px;
+			padding-left: 5vw;
+			font-family: PlayfairI;
+			/*color: white;*/
+			color: black;
+			/*text-align: center;*/
+			/*background-image: url(images/bwbg.jpeg);
+			background-repeat: no-repeat;
+			background-size: cover;*/
+			background-color: black;
+			/*background-color: rgb(229,201,47);*/
+			background-color: rgb(198,247,74);
+
+		}
+		/*.title{
+			border: solid 1px blue;
+		}*/
+		.wrap{
+			width: 99vw;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			margin-top: 5px;
+			border-left: dashed 5px black;
+			border-right: dashed 5px black;
+			/*background-image: url(images/orange.png);
+			background-repeat: no-repeat;
+			background-size: cover;*/
+			background-color: rgb(198,247,74);
+		}
+		.HWcontainer{
+			width: 90vw;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		}
+		.text{
+			font-family: Lora;
+			font-size: 11.5pt;
+			margin-top: 7px;
+		}
+		.name{
+			position: absolute;
+			top: 3vw;
+			right: 10vw;
+		}
+		.icons1:hover{
+			color: #999999;
+		}
+		.icons2:hover{
+			color: #999999;
+		}
+		.homeworks{
+			padding: 5px;
+		}
+		.homeworks:hover{
+			color: #999999;
+		}
+		.footerT{
+			color: white;
+			/*display: flex;
+			justify-content: center;*/
+		}
+		footer{
+			margin-top: 5px;
+			background: black;
+			height: 10vh;
+			display: flex;
+			justify-content: center;
+		}
+		a:link {
+			text-decoration: none;
+			color: black;
+		}
+		a:visited {
+			text-decoration: none;
+			color: black;
+		}
+		a:hover {
+			text-decoration: none;
+			color: black;
+		}
+		a:active {
+			text-decoration: none;
+			color: black;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+</head>
+<body>
+	<header>
+		<h1 class="title">Web Development Portfolio</h1>
+		<div class="name"></div>
+	</header>
+	<div class="wrap">
+		<div class="HWcontainer">
+			<div class="homeworks">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icons1 bi bi-journal-bookmark" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M6 8V1h1v6.117L8.743 6.07a.5.5 0 0 1 .514 0L11 7.117V1h1v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/>
+				  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+				  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+				</svg>
+				<div class="text">
+					Micro Assignment #01
+				</div>
+			</div>
+			<div class="homeworks">
+				<!-- <img src="icons/journal2.svg" class="icons2"> -->
+				<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+				  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+				  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+				  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+				</svg>
+				<div class="text">
+					Macro Assignment #01
+				</div>
+			</div>
+			<div class="homeworks">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icons1 bi bi-journal-bookmark" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M6 8V1h1v6.117L8.743 6.07a.5.5 0 0 1 .514 0L11 7.117V1h1v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/>
+				  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+				  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+				</svg>
+				<div class="text">
+					Micro Assignment #02
+				</div>
+			</div>
+			<div class="homeworks">
+				<a href="macro2">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+					  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Macro Assignment #02
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icons1 bi bi-journal-bookmark" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M6 8V1h1v6.117L8.743 6.07a.5.5 0 0 1 .514 0L11 7.117V1h1v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/>
+				  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+				  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+				</svg>
+				<div class="text">
+					Micro Assignment #03
+				</div>
+			</div>
+			<div class="homeworks">
+				<a href="macro3">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+					  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Macro Assignment #03
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icons1 bi bi-journal-bookmark" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M6 8V1h1v6.117L8.743 6.07a.5.5 0 0 1 .514 0L11 7.117V1h1v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/>
+				  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+				  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+				</svg>
+				<div class="text">
+					Micro Assignment #04
+				</div>
+			</div>
+			<div class="homeworks">
+				<a href="macro4/assignment04.html">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+					  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Macro Assignment #04
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icons1 bi bi-journal-bookmark" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M6 8V1h1v6.117L8.743 6.07a.5.5 0 0 1 .514 0L11 7.117V1h1v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/>
+				  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+				  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+				</svg>
+				<div class="text">
+					Micro Assignment #05
+				</div>
+			</div>
+			<div class="homeworks">
+				<a href="macro5/index.html">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+					  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Macro Assignment #05
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<a href="micro6/micro06.php">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icons1 bi bi-journal-bookmark" viewBox="0 0 16 16">
+					  <path fill-rule="evenodd" d="M6 8V1h1v6.117L8.743 6.07a.5.5 0 0 1 .514 0L11 7.117V1h1v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Micro Assignment #06
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<a href="macro6/index.html">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+					  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Macro Assignment #06
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<a href="micro7/micro07.php">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icons1 bi bi-journal-bookmark" viewBox="0 0 16 16">
+					  <path fill-rule="evenodd" d="M6 8V1h1v6.117L8.743 6.07a.5.5 0 0 1 .514 0L11 7.117V1h1v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Micro Assignment #07
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<a href="macro7/index.php">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+					  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Macro Assignment #07
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<a href="micro8/micro08.html">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icons1 bi bi-journal-bookmark" viewBox="0 0 16 16">
+					  <path fill-rule="evenodd" d="M6 8V1h1v6.117L8.743 6.07a.5.5 0 0 1 .514 0L11 7.117V1h1v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Micro Assignment #08
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<a href="macro8/index.php">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+					  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Macro Assignment #08
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<a href="macro9/index.html">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+					  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+					  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+					  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+					</svg>
+					<div class="text">
+						Macro Assignment #09
+					</div>
+				</a>
+			</div>
+			<div class="homeworks">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-journal-album icons2" viewBox="0 0 16 16">
+				  <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+				  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+				  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+				</svg>
+				<div class="text">
+					Macro Assignment #10
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<h5 class="footerT">© Lydia Lin</h5>
+	</footer>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sign Up</title>
+	<style type="text/css">
+		a{
+			text-decoration: none;
+		}
+		.hidden {
+            display: none;
+        }
+        .error{
+            background-color: red;
+        }
+        #button_saveuser{
+            margin: 5px;
+        }
+        #username{
+            margin: 8px;
+        }
+        #passname{
+            margin: 8px;
+        }
+        #panel_signup{
+            margin-left: 30px;
+        }
+	</style>
+	<script src="helpers.js"></script>
+</head>
+<body>
+	<h1>Let's Chat!</h1>
+
+	<div id="error_signup" class="hidden error">
+        <h5>Please Fill Out All The Forms!</h5>
+    </div>
+
+    <div id="error_exist" class="hidden error">
+        <h5>User Already Exists</h5>
+    </div>
+
+
+    <div id="panel_signup">
+        Username: <input type="text" id="username"><br>
+        Password: <input type="password" id="password"><br>
+        <button id="button_saveuser">Sign Up</button>
+       <!--  <button id="button_saveuser">Login</button> -->
+    </div>
+
+    <script type="text/javascript">
+    	document.querySelector('#button_saveuser').onclick = function(e) {
+
+                // store the nickname for future use
+                username = document.querySelector('#username').value;
+                password = document.querySelector('#password').value;
+
+                // // hide the nickname panel
+                // document.querySelector('#panel_nickname').classList.add('hidden');
+
+                // // show the chat panel
+                // document.querySelector('#panel_chat').classList.remove('hidden');
+                if(!username || !password){
+                    document.querySelector('#error_signup').classList.remove('hidden');
+                    console.log('invalid input');
+                }else{
+                    document.querySelector('#error_signup').classList.add('hidden');
+                    performFetch({
+                        url: 'user_manage.php?action=signup',
+                        method: 'post',
+                        data:{
+                            username: username,
+                            password: password
+                        },
+                        success: function(data){
+                            console.log("data from server:", data);
+                            if(data == "user exist"){
+                                console.log("User Already Exists");
+                                document.querySelector('#error_exist').classList.remove('hidden');
+                            }else{
+                            	document.querySelector('#error_exist').classList.add('hidden');
+                            	window.location = "index.html";
+                                console.log("sign up successfully");
+                                console.log("return data: "+data);
+                            }
+                            
+                        },
+                        error: function(error) {
+                            console.log("ERROR");
+                            // document.querySelector('#error_msg').classList.remove('hidden');
+                        }
+                    })
+                }
+            }
+    </script>
+</body>
+</html>

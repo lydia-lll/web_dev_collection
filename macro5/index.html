@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Seasonal To-Do List</title>
+        <style>
+            body {
+                background-image: url('images/corkboard.jpg');
+            }
+            input, #category, textarea{
+                width: 100%;
+                padding: 3px;
+                margin: 3px;
+            }
+            label{
+                padding: 5px;
+            }
+            .error{
+                position: absolute;
+                top: 60px;
+            }
+            #add_title{
+                position: absolute;
+                top: 5px;
+                left: 180px;
+                width: 300px;
+                padding-bottom: 0px;
+                margin-bottom: 0px;
+            }
+            #add_item {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+            }
+            #add_item:hover{
+                -webkit-transform:scale(0.8);
+                -moz-transform:scale(0.8);
+                -ms-transform:scale(0.8);
+                transform:scale(0.8);
+            }
+            #season_filter {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+            #todo_filter {
+                position: absolute;
+                top: 20px;
+                right: 160px;
+            }
+            #panel_add_new_item {
+                width: 500px;
+                height: 300px;
+                background-color: white;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-left: -250px;
+                margin-top: -150px;
+            }
+            #form_inner_container{
+                width: 350px;
+                margin: auto;
+            }
+            #add_form{
+                width: 350px;
+                position: absolute;
+                top: 85px;
+            }
+            #info_box{
+                z-index: 11;
+                width: 300px;
+                height:300px;
+                background-color: white;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-left: -200px;
+                margin-top: -190px;
+                padding: 50px;
+                padding-top: 10px;
+            }
+            #infoText{
+                font-size: 13pt;
+                /*padding: 0px;*/
+                line-height: 1.6;
+            }
+            .hidden {
+                display: none;
+            }
+            .error {
+                background-color: red;
+                color: white;
+            }
+            .del{
+                z-index: 10;
+                position: relative;
+                top: -5px;
+                right: -60px;
+                margin-right: 20px;
+            }
+            /*#info_del{
+                position: relative;
+                top: -17px;
+                right: -340px;
+            }*/
+            .item {
+                z-index: 9;
+                width: 100px;
+                height: 100px;
+                float: left;
+                margin-right: 20px;
+                position: relative;
+            }
+            .winter {
+                background-color: lightblue;                
+            }
+            .spring {
+                background-color: lightgreen;
+            }
+            .summer {
+                background-color: yellow;
+            }
+            .fall {
+                background-color: burlywood;
+            }
+            .checkBox{
+                /*width: 15px;
+                height: 15px;
+                background-color: white;*/
+                z-index: 10;
+                position: absolute;
+                left: 40px;
+                bottom: 20px;
+                margin-right: 20px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>Seasonal To-Do List</h1>
+
+        <select id="todo_filter" onchange="filterFunc()">
+            <option value="all">Show all status</option>
+            <option value="complete">Completed</option>
+            <option value="incomplete">Incompleted</option>
+        </select>
+
+        <select id="season_filter" onchange="filterFunc()">
+            <option value="all">Show all seasons</option>
+            <option value="winter">Winter</option>
+            <option value="spring">Spring</option>
+            <option value="summer">Summer</option>
+            <option value="fall">Fall</option>
+        </select>
+
+        <img id="add_item" src="images/add_button.png">
+
+        <div id="panel_add_new_item" class="hidden">
+            <div id="form_inner_container">
+                <h2 id="add_title">Add New Item</h2>
+                <br>
+                <div class="error hidden" id="add_error">Please fill out all of the form fields!</div>
+
+                <form id="add_form">
+                    <label for="title">Title</label><br>
+                    <input type="text" id="title"><br>
+
+                    <label for="category">Category</label><br>
+                    <select id="category">
+                        <option value="winter">Winter</option>
+                        <option value="spring">Spring</option>
+                        <option value="summer">Summer</option>
+                        <option value="fall">Fall</option>
+                    </select><br>
+            
+                    <label for="description">Description</label><br>
+                    <textarea id="description"></textarea><br>
+
+                    <button id="add_save">Save</button>
+                    <button id="add_cancel">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="item_container"></div>
+
+        <div id="info_box" class="hidden"></div>
+
+
+
+        <script>
+            // dom queries
+            const panel_add_new_item = document.querySelector("#panel_add_new_item");
+            const add_item = document.querySelector("#add_item");
+            const add_cancel = document.getElementById('add_cancel');
+            const add_save = document.getElementById('add_save');
+            const add_error = document.getElementById('add_error');
+            const item_container = document.getElementById('item_container');
+            const info_box = document.getElementById(`info_box`)
+            const info_del = document.querySelector(`#info_del`);
+            const season_filter = document.querySelector(`#season_filter`)
+            const todo_filter = document.querySelector(`#todo_filter`)
+            let checked = false;
+            let clickCheck = false;
+
+            function closeInfo(){
+                info_box.classList.add('hidden');
+            }
+
+            function filterFunc(){
+                let children = item_container.children;
+                if (todo_filter.value == "all" && season_filter.value == "all") {
+                    for(let i=0; i<children.length; i++){
+                        children[i].classList.remove('hidden');
+                    }
+                }else if(todo_filter.value == "all"){
+                    for(let i=0; i<children.length; i++){
+                        if(children[i].dataset.category != season_filter.value){
+                            children[i].classList.add('hidden');
+                        }else{
+                            children[i].classList.remove('hidden');
+                        }
+                    }
+                }else if(season_filter.value == "all"){
+                    for(let i=0; i<children.length; i++){
+                        if(children[i].dataset.status != todo_filter.value){
+                            children[i].classList.add('hidden');
+                        }else{
+                            children[i].classList.remove('hidden');
+                        }
+                    }
+                }
+                else{
+                    for(let i=0; i<children.length; i++){
+                        if(children[i].dataset.status == todo_filter.value && children[i].dataset.category == season_filter.value){
+                            children[i].classList.remove('hidden');
+                        }else{
+                            children[i].classList.add('hidden');
+                        }
+                    }
+                }
+            }
+
+            // when the user clicks on the + button trigger the panel to appear
+            add_item.onclick = function(e) {
+                panel_add_new_item.classList.remove('hidden');
+
+                // erase the form
+                document.querySelector('#title').value = '';
+                document.querySelector('#description').value = '';
+                document.querySelector('#category').value = 'winter';
+            }
+
+            add_cancel.onclick = function(e) {
+                e.preventDefault();
+                panel_add_new_item.classList.add('hidden');
+            }
+
+            add_save.onclick = function(e) {
+                e.preventDefault();
+
+                // grab the value from the title, category and description fields
+                let t = document.querySelector('#title').value;
+                let d = document.querySelector('#description').value;
+                let c = document.querySelector('#category').value;
+
+                // if we do have all 3, create the to-do item
+                if (t && d && c) {
+                    add_error.classList.add('hidden');
+
+                    // create our new to-do item
+                    let item = document.createElement('div');
+                    item.classList.add('item');
+                    item.innerText = t;
+                    item.classList.add(c);
+                    item_container.appendChild(item);
+
+                    //create check box
+                    let checkbox = document.createElement('div');
+                    checkbox.innerHTML += '<i class="bi bi-square"></i>'
+                    checkbox.classList.add('checkBox');
+                    item.dataset.status = "incomplete";
+                    item.appendChild(checkbox);
+
+                    //create del button
+                    let del = document.createElement('img');
+                    del.classList.add('del');
+                    del.classList.add('hidden');
+                    del.src = 'images/delete_button.png';
+                    item.appendChild(del);
+                    //create info box
+
+                    // have the item rememeber all the data it knows about itself
+                    item.dataset.title = t;
+                    item.dataset.description = d;
+                    item.dataset.category = c;
+                    item.dataset.created = new Date();
+                    item.dataset.lastAccessed = new Date();
+
+                    // set the item up so you can click on it
+                    item.addEventListener('click',function(event){
+                        // if(item.dataset.clickCheck=="true"){
+                        //     item.dataset.clickCheck=="false";
+                        // }else{
+                            info_box.classList.remove('hidden');
+                            info_box.innerHTML = ""
+                            info_box.innerHTML += `<h2>${event.currentTarget.dataset.title}</h2>` 
+                            info_box.innerHTML += `<div id="infoText">Season: ${event.currentTarget.dataset.category}</div>`
+                            info_box.innerHTML += `<div id="infoText">${event.currentTarget.dataset.description}</div>`
+                            info_box.innerHTML += `<hr>`
+                            info_box.innerHTML += `<div id="infoText">Created: ${event.currentTarget.dataset.created}</div>`
+                            info_box.innerHTML += `<div id="infoText">Last Accessed: ${event.currentTarget.dataset.lastAccessed}</div>`
+                            // info_box.innerHTML += `<button id="info_cpl" style="margin-left: 50px; margin-top: 20px;" onclick="checkInfo()">Check!</button>`
+                            info_box.innerHTML += `<button id="info_del" style="margin-left: 120px; margin-top: 20px;" onclick="closeInfo()">Close</button>`
+                            item.dataset.lastAccessed = new Date();
+                        // }
+                    })
+                    item.addEventListener('mouseover',function(event){
+                        del.classList.remove('hidden');
+                    })
+                    item.addEventListener('mouseout',function(event){
+                        del.classList.add('hidden');
+                    })
+
+                    del.addEventListener('click',function(event){
+                        // item_container.removeChild(item);
+                        item.remove();
+                        event.stopPropagation();
+                    })
+
+                    checkbox.addEventListener('click',function(event){
+                        // item.dataset.clickCheck = "true";
+                        // checked =! checked;
+                        // info_box.classList.add('hidden');
+                        console.log(item, checked)
+                        if(item.dataset.status=="incomplete"){
+                            checkbox.innerHTML = '<i class="bi bi-check-square-fill"></i>'
+                            item.dataset.status = "complete";
+                        }else{
+                            checkbox.innerHTML = '<i class="bi bi-square"></i>'
+                            item.dataset.status = "incomplete";
+                        }
+                        filterFunc();
+                        event.stopPropagation();
+                    })
+                    // close the add panel
+                    panel_add_new_item.classList.add('hidden');
+                    season_filter.value = "all";
+                    filterFunc();
+                    // todoFunc();
+                }
+
+                // make sure we hvae all 3 -- if not, trigger the error message
+                else {
+                    add_error.classList.remove('hidden');
+                }
+
+            }
+
+
+        </script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    </body>
+</html>
